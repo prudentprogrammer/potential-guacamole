@@ -15,6 +15,8 @@ struct ContentView: View {
     // Scoring
     @State var leftScore = 0
     @State var rightScore = 0
+    @State private var rightPaddleY: CGFloat = 0
+    @State private var rightDir: CGFloat = 1
 
     var body: some View {
         GeometryReader { geo in
@@ -43,7 +45,7 @@ struct ContentView: View {
                 Rectangle()
                     .fill(.red)
                     .frame(width: paddleWidth, height: paddleHeight)
-                    .position(x: W - 30, y: halfH)
+                    .position(x: W - 30, y: halfH + rightPaddleY)
 
                 // Scoreboard
                 HStack(spacing: 24) {
@@ -55,6 +57,16 @@ struct ContentView: View {
                 .position(x: halfW, y: 40)
 
             }.onReceive(timer.autoconnect()) { _ in
+                
+                let aiSpeed: CGFloat = 6
+                rightPaddleY += rightDir * aiSpeed
+
+                // keep it on-screen and bounce at edges
+                let rightLimit = CGFloat(halfH - paddleHeight/2)
+                if rightPaddleY > rightLimit { rightPaddleY = rightLimit; rightDir = -1 }
+                if rightPaddleY < -rightLimit { rightPaddleY = -rightLimit; rightDir =  1 }
+                
+                
                 // Move the ball
                 ballX += ballDx
                 ballY += ballDy
@@ -68,7 +80,7 @@ struct ContentView: View {
                 let ballHitsLeftPaddleVertically =
                     abs(ballY - playerPaddleY) <= halfPaddleHeight
                 let ballHitsRightPaddleVertically =
-                    abs(ballY) <= halfPaddleHeight
+                    abs(ballY - rightPaddleY) <= halfPaddleHeight
 
                 if bottomCollision || topCollision {
                     ballDy *= -1
@@ -95,6 +107,8 @@ struct ContentView: View {
                     ballDx = -5  // Serve toward left
                     leftScore += 1
                 }
+                
+                
 
             }
         }

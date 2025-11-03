@@ -1,21 +1,19 @@
-//
-//  ContentView.swift
-//  TestSwift2
-//
-//  Created by Lakshmi Bharadwaj on 11/3/25.
-//
-
 import SwiftUI
 
 struct ContentView: View {
+    // Ball Parameters
+    let ballRadius = 15.0
+    let ballX = 0
+    let ballY = 0
+    let ballDx = 5
+    let ballDy = 5
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        ZStack {
+            Circle()
+                .fill(Color.red)
+                .frame(width: ballRadius * 2, height: ballRadius * 2)
         }
-        .padding()
     }
 }
 

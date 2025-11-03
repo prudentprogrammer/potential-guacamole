@@ -5,8 +5,8 @@ struct ContentView: View {
     let ballRadius = 15.0
     @State var ballX = 0.0
     @State var ballY = 0.0
-    @State var ballDx = -5.0
-    @State var ballDy = 0.0
+    @State var ballDx = 5.0
+    @State var ballDy = 2.0
     let timer = Timer.publish(every: 0.030, on: .main, in: .common)
     let paddleHeight = 200.0
     let paddleOffset = 150.0
@@ -44,14 +44,25 @@ struct ContentView: View {
                 let topCollision    = (ballY - ballRadius <= -halfH)
                 let leftPaddleCollision = (ballX - ballRadius <= -halfW + 30)
                 let rightPaddleCollision = (ballX + ballRadius >= halfW - 30)
+                let halfPaddleHeight = paddleHeight / 2
+                let ballHitsLeftPaddleVertically =
+                    abs(ballY) <= halfPaddleHeight
+                let ballHitsRightPaddleVertically =
+                    abs(ballY) <= halfPaddleHeight
                 
                 if bottomCollision || topCollision {
                     ballDy *= -1
                 }
                 
-                if leftPaddleCollision || rightPaddleCollision {
+                if leftPaddleCollision && ballHitsLeftPaddleVertically {
                     ballDx *= -1
                 }
+                
+                if rightPaddleCollision && ballHitsRightPaddleVertically {
+                    ballDx *= -1
+                }
+                
+                
                 
             }
         }

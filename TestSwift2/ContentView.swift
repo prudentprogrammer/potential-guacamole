@@ -30,7 +30,15 @@ struct ContentView: View {
                 Rectangle()
                     .fill(.yellow)
                     .frame(width: paddleWidth, height: paddleHeight)
-                    .position(x: 30, y: halfH)
+                    .position(x: 30, y: halfH + playerPaddleY)
+                    .gesture(
+                            // Add the DragGesture here to update playerPaddleY
+                            DragGesture()
+                                .onChanged { value in
+                                    // Add boundary checks later. For now, just allow movement.
+                                    playerPaddleY = value.location.y - halfH
+                                }
+                        )
                 //
                 Rectangle()
                     .fill(.red)
@@ -58,7 +66,7 @@ struct ContentView: View {
                 let rightPaddleCollision = (ballX + ballRadius >= halfW - 30)
                 let halfPaddleHeight = paddleHeight / 2
                 let ballHitsLeftPaddleVertically =
-                    abs(ballY) <= halfPaddleHeight
+                    abs(ballY - playerPaddleY) <= halfPaddleHeight
                 let ballHitsRightPaddleVertically =
                     abs(ballY) <= halfPaddleHeight
 

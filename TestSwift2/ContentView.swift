@@ -40,14 +40,12 @@ struct ContentView: View {
                 ballY += ballDy
                 
                 // Check for top and bottom walls for collision
-//                let screenHeight = geometry.size.height
-//                let halfHeight = screenHeight / 2
-//                let bottomCollision = (ballY + ballRadius >= halfHeight)
-//                let topCollision    = (ballY - ballRadius <= -halfHeight)
-//                
-//                if bottomCollision || topCollision {
-//                    ballDy *= -1
-//                }
+                let bottomCollision = (ballY + ballRadius >= halfH)
+                let topCollision    = (ballY - ballRadius <= -halfH)
+                
+                if bottomCollision || topCollision {
+                    ballDy *= -1
+                }
             }
         }
     }

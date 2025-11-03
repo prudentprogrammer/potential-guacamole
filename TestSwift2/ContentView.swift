@@ -8,6 +8,8 @@ struct ContentView: View {
     @State var ballDx = 5.0
     @State var ballDy = 5.0
     let timer = Timer.publish(every: 0.030, on: .main, in: .common)
+    let paddleHeight = 150.0
+    let paddleOffset = 150.0
     
     var body: some View {
         ZStack {
@@ -15,6 +17,20 @@ struct ContentView: View {
                 .fill(Color.red)
                 .frame(width: ballRadius * 2, height: ballRadius * 2)
                 .offset(x: ballX, y: ballY)
+            
+            Rectangle()
+                .fill(.black)
+                .frame(width: 30, height: paddleHeight)
+                .offset(x: -paddleOffset)
+            
+            Rectangle()
+                .fill(.black)
+                .frame(width: 30, height: paddleHeight)
+                .offset(x: paddleOffset)
+            
+            
+            
+            
         }.onReceive(timer.autoconnect()) {_ in
             ballX += ballDx
             ballY += ballDy
